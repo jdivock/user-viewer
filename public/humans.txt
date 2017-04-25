@@ -2,8 +2,7 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Jay Divock -- Pricipal Fungineer -- @jdivock
 
 # THANKS
 
-    <name>
