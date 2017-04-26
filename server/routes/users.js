@@ -1,19 +1,19 @@
-const db = require('../bookshelf');
+const { User } = require('../db');
 const express = require('express');
 
 const router = express.Router();
 
 router.route('/users')
   .get((req, res) => {
-    db.User.fetchAll().then(models => res.json(models));
+    User.fetchAll().then(models => res.json(models));
   });
 
 router.route('/users/:user_id')
   .get((req, res) => {
-    db.User.where({ id: req.params.user_id }).fetch().then(model => res.json(model));
+    User.where({ id: req.params.user_id }).fetch().then(model => res.json(model));
   })
   .put((req, res) => {
-    new db.User({ id: req.params.user_id })
+    new User({ id: req.params.user_id })
     .save({
       first_name: req.body.firstName,
       last_name: req.body.lastName,
@@ -25,7 +25,7 @@ router.route('/users/:user_id')
     .then(model => res.json(model));
   })
   .post((req, res) => {
-    new db.User({
+    new User({
       first_name: req.body.firstName,
       last_name: req.body.lastName,
       email: req.body.email,
@@ -35,6 +35,11 @@ router.route('/users/:user_id')
     })
     .save()
     .then(model => res.json(model));
+  })
+  .delete((req, res) => {
+    new User({ id: req.params.user_id })
+      .destroy()
+      .then(model => res.json(model));
   });
 
 

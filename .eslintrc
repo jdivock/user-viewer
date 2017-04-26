@@ -21,6 +21,8 @@
     "key-spacing"          : 0,
     "jsx-quotes"           : [2, "prefer-single"],
     "max-len"              : [2, 120, 2],
-    "object-curly-spacing" : [2, "always"]
+    "import/no-named-as-default": 0,
+    "object-curly-spacing" : [2, "always"],
+    "react/jsx-filename-extension": 0,
   }
 }
