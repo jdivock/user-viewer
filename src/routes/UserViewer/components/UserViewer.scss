@@ -1,0 +1,27 @@
+.user-viewer {
+  display: flex;
+}
+
+.user-nav {
+  flex: 1;
+
+  li {
+    margin: 5px;
+  }
+
+  a {
+    cursor: pointer;
+  }
+}
+
+.user-editor {
+  flex: 4;
+
+  fieldset > div {
+    display: flex
+  }
+
+  fieldset > div > div {
+    flex: 1;
+  }
+}

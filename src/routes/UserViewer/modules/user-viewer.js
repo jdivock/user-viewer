@@ -9,13 +9,20 @@ export const getUsers = () =>
       oReq.addEventListener('load', function loadHandler() {
         dispatch({
           type    : GET_USERS,
-          payload : JSON.parse(this.response),
+          payload : JSON.parse(this.response).map(user => ({
+            id: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            address1: user.address1,
+            address2: user.address2,
+            phone: user.phone,
+          })),
         });
+        resolve();
       });
       oReq.open('GET', '/api/users');
       oReq.send();
-
-      resolve();
     });
 
 export const actions = {

@@ -2,9 +2,9 @@ import React from 'react';
 import './Header.scss';
 
 export const Header = () => (
-  <div>
+  <header>
     <h1>User Viewer</h1>
-  </div>
+  </header>
 );
 
 export default Header;

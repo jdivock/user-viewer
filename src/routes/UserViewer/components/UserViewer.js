@@ -1,23 +1,55 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './UserViewer.scss';
+import UserNav from './UserNav';
+import UserEditor from './UserEditor';
 
 export class UserViewer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedUserIdx: null,
+    };
+
+    this.setSelectedUser = this.setSelectedUser.bind(this);
+  }
+
   componentDidMount() {
     this.props.getUsers();
   }
 
+  setSelectedUser(id) {
+    this.setState({
+      selectedUserIdx: this.props.users.findIndex(user => user.id === id),
+    });
+  }
+
   render() {
     return (
-      <div>
-        <h4>Welcome!</h4>
+      <div className='user-viewer'>
+        <UserNav
+          users={this.props.users}
+          setSelectedUser={this.setSelectedUser}
+          selectedUserIdx={this.state.selectedUserIdx}
+        />
+        <UserEditor user={this.props.users[this.state.selectedUserIdx]} />
       </div>
     );
   }
 }
 
 UserViewer.propTypes = {
-  getUsers     : PropTypes.func.isRequired,
+  getUsers: PropTypes.func.isRequired,
+  users: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    email: PropTypes.string,
+    address1: PropTypes.string,
+    address2: PropTypes.string,
+    phone: PropTypes.string,
+  })).isRequired,
 };
 
 export default UserViewer;
