@@ -40,6 +40,7 @@ export default class UserEditor extends Component {
           <legend>
             User Editor
             <button
+              className='pure-button button-secondary'
               onClick={() => {
                 clearSelectedUser(
                   () => this.setState({user: {}}),
@@ -143,8 +144,14 @@ export default class UserEditor extends Component {
               </div>
               <div className='form-controls'>
                 { !this.state.createMode ?
-                  <button onClick={() => onUpdate(user)}>Update</button> :
                   <button
+                    className='pure-button pure-button-primary'
+                    onClick={() => onUpdate(user)}
+                  >
+                    Update
+                  </button> :
+                  <button
+                    className='pure-button pure-button-primary'
                     onClick={() => {
                       onCreate(user);
                       this.setState({
@@ -157,6 +164,7 @@ export default class UserEditor extends Component {
                   </button>
                 }
                 <button
+                  className='pure-button'
                   onClick={() => {
                     this.setState({createMode: false, user: null});
                     clearSelectedUser();
