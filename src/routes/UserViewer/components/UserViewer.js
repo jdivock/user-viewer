@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './UserViewer.scss';
+import {userType} from './types';
 import UserNav from './UserNav';
 import UserEditor from './UserEditor';
 
@@ -62,15 +63,7 @@ UserViewer.propTypes = {
   deleteUser: PropTypes.func.isRequired,
   getUsers: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
-  users: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    email: PropTypes.string,
-    address1: PropTypes.string,
-    address2: PropTypes.string,
-    phone: PropTypes.string,
-  })).isRequired,
+  users: userType.isRequired,
 };
 
 export default UserViewer;

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
-// TODO: clear selected item when adding
+import {userType} from './types';
+
 export default class UserEditor extends Component {
   constructor(props) {
     super(props);
@@ -143,35 +145,50 @@ export default class UserEditor extends Component {
                 </div>
               </div>
               <div className='form-controls'>
-                { !this.state.createMode ?
+                <span>
+                  { !this.state.createMode ?
+                    <button
+                      className='pure-button pure-button-primary'
+                      onClick={() => onUpdate(user)}
+                    >
+                      Update
+                    </button> :
+                    <button
+                      className='pure-button pure-button-primary'
+                      onClick={() => {
+                        onCreate(user);
+                        this.setState({
+                          createMode: false,
+                          user,
+                        });
+                      }}
+                    >
+                      Create
+                    </button>
+                  }
                   <button
-                    className='pure-button pure-button-primary'
-                    onClick={() => onUpdate(user)}
-                  >
-                    Update
-                  </button> :
-                  <button
-                    className='pure-button pure-button-primary'
+                    className='pure-button'
                     onClick={() => {
-                      onCreate(user);
-                      this.setState({
-                        createMode: false,
-                        user,
-                      });
+                      this.setState({createMode: false, user: null});
+                      clearSelectedUser();
                     }}
                   >
-                    Create
+                    Cancel
+                  </button>
+                </span>
+                {
+                  !createMode &&
+                  <button
+                    className='pure-button button-error'
+                    onClick={() => {
+                      const tmpId = user.id;
+                      clearSelectedUser(() => onDelete(tmpId));
+                    }}
+                  >
+                    Delete
                   </button>
                 }
-                <button
-                  className='pure-button'
-                  onClick={() => {
-                    this.setState({createMode: false, user: null});
-                    clearSelectedUser();
-                  }}
-                >
-                  Cancel
-                </button>
+
               </div>
             </fieldset> : null
           }
@@ -181,3 +198,11 @@ export default class UserEditor extends Component {
     );
   }
 }
+
+UserEditor.propTypes = {
+  clearSelectedUser: PropTypes.func.isRequired,
+  onCreate: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  user: userType.isRequired,
+};
