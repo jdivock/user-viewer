@@ -41,8 +41,9 @@ export default class UserEditor extends Component {
             User Editor
             <button
               onClick={() => {
-                // clearSelectedUser();
-                this.setState({createMode: true, user: {}});
+                clearSelectedUser(
+                  () => this.setState({user: {}}),
+                );
               }}
             >
               Add User
@@ -142,18 +143,27 @@ export default class UserEditor extends Component {
               </div>
               <div className='form-controls'>
                 { !this.state.createMode ?
-                  (
-                    <div>
-                      <button onClick={() => onUpdate(user)}>Update</button>
-                    </div>
-                  ) :
-                  (
-                    <div>
-                      <button onClick={() => onCreate(user)}>Create</button>
-                      <button onClick={() => this.setState({createMode: false, user: null})}>Cancel</button>
-                    </div>
-                  )
+                  <button onClick={() => onUpdate(user)}>Update</button> :
+                  <button
+                    onClick={() => {
+                      onCreate(user);
+                      this.setState({
+                        createMode: false,
+                        user,
+                      });
+                    }}
+                  >
+                    Create
+                  </button>
                 }
+                <button
+                  onClick={() => {
+                    this.setState({createMode: false, user: null});
+                    clearSelectedUser();
+                  }}
+                >
+                  Cancel
+                </button>
               </div>
             </fieldset> : null
           }

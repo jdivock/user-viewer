@@ -19,10 +19,10 @@ export class UserViewer extends Component {
     this.props.getUsers();
   }
 
-  setSelectedUser(id) {
+  setSelectedUser(id, cb = () => {}) {
     this.setState({
       selectedUserIdx: this.props.users.findIndex(user => user.id === id),
-    });
+    }, cb());
   }
 
   render() {
@@ -47,7 +47,7 @@ export class UserViewer extends Component {
         />
         <UserEditor
           user={users[selectedUserIdx]}
-          clearSelectedUser={() => this.setSelectedUser(null)}
+          clearSelectedUser={cb => this.setSelectedUser(null, cb)}
           onDelete={deleteUser}
           onCreate={createUser}
           onUpdate={updateUser}
