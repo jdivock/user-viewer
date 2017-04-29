@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 
+// TODO: clear selected item when adding
 export default class UserEditor extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {user: props.user};
+    this.state = {
+      user: props.user,
+      createMode: false,
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -15,10 +19,13 @@ export default class UserEditor extends Component {
     const {
       state: {
         user,
+        createMode,
       },
       props: {
+        clearSelectedUser,
         onUpdate,
         onDelete,
+        onCreate,
       },
     } = this;
 
@@ -30,8 +37,18 @@ export default class UserEditor extends Component {
             e.preventDefault();
           }}
         >
-          <legend>User Editor</legend>
-          { user ?
+          <legend>
+            User Editor
+            <button
+              onClick={() => {
+                // clearSelectedUser();
+                this.setState({createMode: true, user: {}});
+              }}
+            >
+              Add User
+            </button>
+          </legend>
+          { user || createMode ?
             <fieldset>
               <div>
                 <div>
@@ -45,7 +62,7 @@ export default class UserEditor extends Component {
                             firstName: target.value,
                           },
                         })}
-                      value={user.firstName}
+                      value={user.firstName || ''}
                     />
                   </label>
 
@@ -59,7 +76,7 @@ export default class UserEditor extends Component {
                             lastName: target.value,
                           },
                         })}
-                      value={user.lastName}
+                      value={user.lastName || ''}
                     />
                   </label>
 
@@ -67,7 +84,7 @@ export default class UserEditor extends Component {
                     Email
                     <input
                       type='email'
-                      value={user.email}
+                      value={user.email || ''}
                       onChange={({target}) =>
                         this.setState({
                           user: {
@@ -81,7 +98,7 @@ export default class UserEditor extends Component {
                   <label>
                     Phone
                     <input
-                      value={user.phone}
+                      value={user.phone || ''}
                       onChange={({target}) =>
                         this.setState({
                           user: {
@@ -97,7 +114,7 @@ export default class UserEditor extends Component {
                   <label>
                     Address
                     <input
-                      value={user.address1}
+                      value={user.address1 || ''}
                       onChange={({target}) =>
                         this.setState({
                           user: {
@@ -111,7 +128,7 @@ export default class UserEditor extends Component {
                   <label>
                     Address
                     <input
-                      value={user.address2}
+                      value={user.address2 || ''}
                       onChange={({target}) =>
                         this.setState({
                           user: {
@@ -124,8 +141,19 @@ export default class UserEditor extends Component {
                 </div>
               </div>
               <div className='form-controls'>
-                <button onClick={() => onUpdate(user)}>Update</button>
-                <button onClick={() => onDelete(user.id)}>Delete</button>
+                { !this.state.createMode ?
+                  (
+                    <div>
+                      <button onClick={() => onUpdate(user)}>Update</button>
+                    </div>
+                  ) :
+                  (
+                    <div>
+                      <button onClick={() => onCreate(user)}>Create</button>
+                      <button onClick={() => this.setState({createMode: false, user: null})}>Cancel</button>
+                    </div>
+                  )
+                }
               </div>
             </fieldset> : null
           }

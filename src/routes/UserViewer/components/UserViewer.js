@@ -47,6 +47,7 @@ export class UserViewer extends Component {
         />
         <UserEditor
           user={users[selectedUserIdx]}
+          clearSelectedUser={() => this.setSelectedUser(null)}
           onDelete={deleteUser}
           onCreate={createUser}
           onUpdate={updateUser}

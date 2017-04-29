@@ -38,7 +38,6 @@ export const deleteUser = id =>
       const oReq = new XMLHttpRequest();
 
       oReq.addEventListener('load', function loadHandler() {
-        console.log(this.response);
         dispatch({
           type    : DELETE_USER,
           payload: { id },
@@ -55,21 +54,23 @@ export const createUser = user =>
       const oReq = new XMLHttpRequest();
 
       oReq.addEventListener('load', function loadHandler() {
+        const createdUser = JSON.parse(this.response);
         dispatch({
           type    : CREATE_USER,
-          payload : JSON.parse(this.response).map(user => ({
-            id: user.id,
-            firstName: user.first_name,
-            lastName: user.last_name,
-            email: user.email,
-            address1: user.address1,
-            address2: user.address2,
-            phone: user.phone,
-          })),
+          payload : {
+            id: createdUser.id,
+            firstName: createdUser.first_name,
+            lastName: createdUser.last_name,
+            email: createdUser.email,
+            address1: createdUser.address1,
+            address2: createdUser.address2,
+            phone: createdUser.phone,
+          },
         });
         resolve();
       });
       oReq.open('POST', '/api/users');
+      oReq.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
       oReq.send(JSON.stringify(user));
     });
 
@@ -120,7 +121,10 @@ const ACTION_HANDLERS = {
     const delIdx = state.findIndex(el => el.id === payload.id);
     return [...state.slice(0, delIdx), ...state.slice(delIdx + 1, state.length)];
   },
-  [CREATE_USER] : (state, action) => action.payload,
+  [CREATE_USER] : (state, action) => ([
+    ...state,
+    action.payload,
+  ]),
 };
 
 const initialState = [];
