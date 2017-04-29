@@ -26,21 +26,41 @@ export class UserViewer extends Component {
   }
 
   render() {
+    const {
+      props: {
+        users,
+        deleteUser,
+        createUser,
+        updateUser,
+      },
+      state: {
+        selectedUserIdx,
+      },
+    } = this;
+
     return (
       <div className='user-viewer'>
         <UserNav
-          users={this.props.users}
+          users={users}
           setSelectedUser={this.setSelectedUser}
-          selectedUserIdx={this.state.selectedUserIdx}
+          selectedUserIdx={selectedUserIdx}
         />
-        <UserEditor user={this.props.users[this.state.selectedUserIdx]} />
+        <UserEditor
+          user={users[selectedUserIdx]}
+          onDelete={deleteUser}
+          onCreate={createUser}
+          onUpdate={updateUser}
+        />
       </div>
     );
   }
 }
 
 UserViewer.propTypes = {
+  createUser: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
   getUsers: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     firstName: PropTypes.string,

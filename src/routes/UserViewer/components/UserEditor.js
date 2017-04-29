@@ -1,9 +1,14 @@
 import React from 'react';
 
-export default ({user}) => {
+export default ({ user, onSave, onDelete, onCreate }) => {
   return (
     <div className='user-editor'>
-      <form className='pure-form pure-form-stacked'>
+      <form
+        className='pure-form pure-form-stacked'
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
         <legend>User Editor</legend>
         { user ?
           <fieldset>
@@ -42,8 +47,13 @@ export default ({user}) => {
                 </label>
               </div>
             </div>
+            <div className='form-controls'>
+              <button onClick={() => onSave(user)}>Save</button>
+              <button onClick={() => onDelete(user.id)}>Delete</button>
+            </div>
           </fieldset> : null
         }
+
       </form>
     </div>
   );
