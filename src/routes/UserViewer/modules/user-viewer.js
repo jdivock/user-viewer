@@ -1,21 +1,34 @@
+/* eslint no-param-reassign: 0 */
 export const GET_USERS = 'GET_USERS';
 export const UPDATE_USER = 'UPDATE_USER';
 export const CREATE_USER = 'CREATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 
+// TODO: use lib that has pending / success / fail states
+// TODO: Check respones for non-200's
 export const updateUser = user =>
   dispatch =>
     new Promise((resolve) => {
       const oReq = new XMLHttpRequest();
 
       oReq.addEventListener('load', function loadHandler() {
-        console.log(this.response);
+        const updatedUser = JSON.parse(this.response);
         dispatch({
           type    : UPDATE_USER,
+          payload : ({
+            id: updatedUser.id,
+            firstName: updatedUser.first_name,
+            lastName: updatedUser.last_name,
+            email: updatedUser.email,
+            address1: updatedUser.address1,
+            address2: updatedUser.address2,
+            phone: updatedUser.phone,
+          }),
         });
         resolve();
       });
       oReq.open('PUT', `/api/users/${user.id}`);
+      oReq.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
       oReq.send(JSON.stringify(user));
     });
 
@@ -94,8 +107,16 @@ export const actions = {
 
 const ACTION_HANDLERS = {
   [GET_USERS] : (state, action) => action.payload,
-  [UPDATE_USER] : state => state,
-  [DELETE_USER] : (state, { payload }) => {
+  [UPDATE_USER] : (state, {payload}) => {
+    payload.id = parseInt(payload.id, 10);
+    const updatedIdx = state.findIndex(el => el.id === payload.id);
+    return [
+      ...state.slice(0, updatedIdx),
+      payload,
+      ...state.slice(updatedIdx + 1, state.length),
+    ];
+  },
+  [DELETE_USER] : (state, {payload}) => {
     const delIdx = state.findIndex(el => el.id === payload.id);
     return [...state.slice(0, delIdx), ...state.slice(delIdx + 1, state.length)];
   },

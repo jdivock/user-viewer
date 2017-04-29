@@ -4,6 +4,18 @@ const express = require('express');
 const router = express.Router();
 
 router.route('/users')
+  .post((req, res) => {
+    new User({
+      first_name: req.body.firstName,
+      last_name: req.body.lastName,
+      email: req.body.email,
+      address1: req.body.address1,
+      address2: req.body.address2,
+      phone: req.body.phone,
+    })
+    .save()
+    .then(model => res.json(model));
+  })
   .get((req, res) => {
     User.fetchAll().then(models => res.json(models));
   });
@@ -22,18 +34,6 @@ router.route('/users/:user_id')
       address2: req.body.address2,
       phone: req.body.phone,
     }, { patch: true })
-    .then(model => res.json(model));
-  })
-  .post((req, res) => {
-    new User({
-      first_name: req.body.firstName,
-      last_name: req.body.lastName,
-      email: req.body.email,
-      address1: req.body.address1,
-      address2: req.body.address2,
-      phone: req.body.phone,
-    })
-    .save()
     .then(model => res.json(model));
   })
   .delete((req, res) => {

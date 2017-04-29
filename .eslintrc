@@ -22,7 +22,8 @@
     "jsx-quotes"           : [2, "prefer-single"],
     "max-len"              : [2, 120, 2],
     "import/no-named-as-default": 0,
-    "object-curly-spacing" : [2, "always"],
+    "object-curly-spacing" : [0, "always"],
     "react/jsx-filename-extension": 0,
+    "jsx-a11y/label-has-for": 0,
   }
 }
